@@ -1,9 +1,16 @@
-<div>
-  <% flash.each do |message_type, message| %>
-    <div class="alert alert-<%= message_type %>"><%= message %></div>
-  <% end %>
-</div>
-
-<div>
-  <%= link_to 'アカウント登録をする', new_user_path %>
-</div>
+<% if logged_in? %>
+  <div>
+    <%= link_to "個別ページ", current_user %>
+  </div>
+  <div>
+    <%= link_to "ログアウト", logout_path, method: "delete" %>
+  </div>
+<% else %>
+  <p>ログインしていません</p>
+  <div>
+    <%= link_to 'アカウント登録をする', new_user_path %>
+  </div>
+  <div>
+    <%= link_to 'ログインする', login_path %>
+  </div>
+<% end %>

@@ -14,6 +14,7 @@ class UsersController < ApplicationController
       flash[:success] = 'アカウント登録が完了しました'
       redirect_to users_path
     else
+      flash.now[:success] = 'アカウント登録に失敗しました'
       render 'new'
     end
   end

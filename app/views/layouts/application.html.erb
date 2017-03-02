@@ -14,6 +14,12 @@
   <% end %>
 </div>
 
+<% if logged_in? %>
+  <p>ログインしています</p>
+<% else %>
+  <p>ログインしていません</p>
+<% end %>
+
 <%= yield %>
 
 </body>

@@ -1,0 +1,21 @@
+<h1>ユーザー情報を編集する</h1>
+
+<div>
+  <%= form_for(@user) do |f| %>
+
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+
+    <%= f.label :email %>
+    <%= f.email_field :email %>
+
+    <%= f.label :password, 'パスワード' %>
+    <%= f.password_field :password %>
+
+    <%= f.label :password_confirmation, 'パスワード(確認用)' %>
+    <%= f.password_field :password_confirmation %>
+
+    <%= f.submit "編集する" %>
+  <% end %>
+
+</div>

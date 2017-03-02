@@ -5,7 +5,6 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
-  # 現在ログイン中のユーザーを返す (いる場合)
   # ユーザーを永続的セッションに記憶する
   def remember(user)
     user.remember
@@ -13,9 +12,19 @@ module SessionsHelper
     cookies.permanent[:remember_token] = user.remember_token
   end
 
+  # 記憶トークンcookieに対応するユーザーを返す
   def current_user
-    # @current_userに何も代入されていないときだけfind_by呼び出しが実行される
-    @current_user ||= User.find_by(id: session[:user_id])
+    # ユーザーIDにユーザーIDのセッションを代入した結果、ユーザーIDのセッションが存在する場合
+    if (user_id = session[:user_id])
+      # @current_userに何も代入されていないときだけfind_by呼び出しが実行される
+      @current_user ||= User.find_by(id: user_id)
+    elsif (user_id = cookies.signed[:user_id])
+      user = User.find_by(id: user_id)
+      if user && user.authenticated?(cookies[:remember_token])
+        log_in user
+        @current_user = user
+      end
+    end
   end
 
   # ユーザーがログインしていればtrue、その他ならfalseを返す

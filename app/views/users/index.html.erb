@@ -1,12 +1,26 @@
 <% if logged_in? %>
+  <h2>あなたのコンテンツ</h2>
   <div>
     <%= link_to "個別ページ", current_user %>
   </div>
   <div>
+    <%= link_to "ユーザー情報を編集する", edit_user_path(current_user) %>
+  </div>
+  <div>
     <%= link_to "ログアウト", logout_path, method: "delete" %>
   </div>
+  <div>
+    <h2>登録ユーザーの一覧</h2>
+    <% @users.each do |user| %>
+      <%= user.name %>
+      <!-- admin権限を持つユーザー、かつ、自分以外のユーザー、の場合 -->
+      <% if current_user.admin? && !current_user?(user) %>
+        <%= link_to 'ユーザーを削除', " /users/#{user.id}", method: :delete, data: { confirm: '削除してよろしいですか？' } %>
+      <% end %>
+      </br>
+    <% end %>
+  </div>
 <% else %>
-  <p>ログインしていません</p>
   <div>
     <%= link_to 'アカウント登録をする', new_user_path %>
   </div>

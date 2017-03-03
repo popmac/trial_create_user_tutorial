@@ -1,4 +1,5 @@
 <% if logged_in? %>
+  <h2>あなたのコンテンツ</h2>
   <div>
     <%= link_to "個別ページ", current_user %>
   </div>
@@ -7,6 +8,12 @@
   </div>
   <div>
     <%= link_to "ログアウト", logout_path, method: "delete" %>
+  </div>
+  <div>
+    <h2>登録ユーザーの一覧</h2>
+    <% @users.each do |user| %>
+      <%= user.name %></br>
+    <% end %>
   </div>
 <% else %>
   <div>

@@ -12,7 +12,12 @@
   <div>
     <h2>登録ユーザーの一覧</h2>
     <% @users.each do |user| %>
-      <%= user.name %></br>
+      <%= user.name %>
+      <!-- admin権限を持つユーザー、かつ、自分以外のユーザー、の場合 -->
+      <% if current_user.admin? && !current_user?(user) %>
+        <%= link_to 'ユーザーを削除', " /users/#{user.id}", method: :delete, data: { confirm: '削除してよろしいですか？' } %>
+      <% end %>
+      </br>
     <% end %>
   </div>
 <% else %>

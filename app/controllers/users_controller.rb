@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :admin_user, only: :destroy
 
   def index
-    @users = User.all
+    @users = User.where(activated: true)
   end
 
   def new
@@ -21,6 +21,11 @@ class UsersController < ApplicationController
       flash.now[:success] = 'アカウント登録に失敗しました'
       render 'new'
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
+    redirect_to root_url and return unless @user.activated?
   end
 
   def edit

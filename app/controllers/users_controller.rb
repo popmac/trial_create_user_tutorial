@@ -14,8 +14,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in(@user)
-      flash[:success] = 'アカウント登録が完了しました'
+      UserMailer.account_activation(@user).deliver_now
+      flash[:notice] = "アカウントを有効化するためにメールを確認してください"
       redirect_to users_path
     else
       flash.now[:success] = 'アカウント登録に失敗しました'

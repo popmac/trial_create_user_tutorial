@@ -23,7 +23,28 @@ class PasswordResetsController < ApplicationController
     # 最初にget_userとvalid_userが実行される
   end
 
+  def update
+    # 最初にget_userとvalid_userが実行される
+    # 以下の条件分岐はpasswordのバリデーションにallow_nil: trueを設定したので追加している
+    if params[:user][:password].empty?
+      flash[:notice] = "パスワードの入力がありません"
+      render 'edit'
+    elsif @user.update_attributes(user_params)
+      log_in @user
+      # パスワードの再設定に成功したらreset_digestを破棄する
+      @user.update_attribute(:reset_digest, nil)
+      flash[:success] = "パスワードの変更が完了しました"
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
+
   private
+    def user_params
+      params.require(:user).permit(:password, :password_confirmation)
+    end
+
     # 以下はbeforeフィルター
 
     def get_user
